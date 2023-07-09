@@ -1,10 +1,17 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
-const math = require('canvas-sketch-util/math');
+// const math = require('canvas-sketch-util/math');
+const Tweakpane = require('tweakpane');
 
 const settings = {
   dimensions: [1080, 1080],
   animate: true,
+};
+
+const params = {
+  total: 250,
+  radius: 20,
+  speed: 3,
 };
 
 // In the backgroud canvas-sketch uses this to make the animation
@@ -20,9 +27,9 @@ const settings = {
 
 const sketch = ({ context, width, height }) => {
   let particles = [];
-  const total = 250;
-  const radius = 20;
-  const speed = 3;
+  const total = params.total;
+  const radius = params.radius;
+  const speed = params.speed;
 
   // const total = 4;
   // const radius = 150;
@@ -31,22 +38,22 @@ const sketch = ({ context, width, height }) => {
 
 
   for (let i = 0; i < total; i++) {
-    let x = random.range(radius, width - radius)
-    let y = random.range(radius, height - radius)
+    let x = random.range(radius, width - radius);
+    let y = random.range(radius, height - radius);
 
     // Make sure new particle doesn't overlap over already created ones
     for (let j = 0; j < particles.length; j++) {
       if (particles[j].pos.getDistance(x, y) <= 2 * radius + 12) {
         console.log("generated overlaped particle");
 
-        x = random.range(radius, width - radius)
-        y = random.range(radius, height - radius)
+        x = random.range(radius, width - radius);
+        y = random.range(radius, height - radius);
 
         j = -1;
       }
     }
 
-    particles.push(new Particle(x, y, radius, speed))
+    particles.push(new Particle(x, y, speed))
   }
 
 
@@ -68,7 +75,7 @@ const sketch = ({ context, width, height }) => {
 
         const dist = particle.pos.getDistance(other.pos.x, other.pos.y);
 
-        if (dist > 2 * radius) continue;
+        if (dist > 2 * params.radius) continue;
         // console.log("collided");
 
         const v1x = particle.vel.x;
@@ -117,6 +124,17 @@ const sketch = ({ context, width, height }) => {
   };
 };
 
+const createPane = () => {
+  const pane = new Tweakpane.Pane();
+  // let folder;
+  // folder = pane.addFolder({title: 'Configuration'});
+  
+  // pane.addInput(params, 'total',  { min: 1, max: 250, step: 1 });
+  pane.addInput(params, 'radius', { min: 1, max: 50});
+  // pane.addInput(params, 'speed',  { min: 0, max: 20 });
+}
+
+createPane();
 canvasSketch(sketch, settings);
 
 class Vector {
@@ -133,10 +151,10 @@ class Vector {
 }
 
 class Particle {
-  constructor(x, y, r, vel) {
+  constructor(x, y, vel) {
     this.pos = new Vector(x, y);
     this.vel = new Vector(vel * random.range(-1, 1), vel * random.range(-1, 1));
-    this.radius = r; // 11.5;  // random.range(4, 12);
+    this.radius = params.radius; // 11.5;  // random.range(4, 12);
     this.color = 'lightblue'
     if (random.range(0, 1) < 0.15) this.color = 'blue';
 
@@ -144,8 +162,8 @@ class Particle {
   }
 
   bounce(width, height) {
-    if (this.pos.x + this.radius > width || this.pos.x - this.radius < 0) this.vel.x *= -1;
-    if (this.pos.y + this.radius > height || this.pos.y - this.radius < 0) this.vel.y *= -1;
+    if (this.pos.x + params.radius > width  || this.pos.x - params.radius < 0) this.vel.x *= -1;
+    if (this.pos.y + params.radius > height || this.pos.y - params.radius < 0) this.vel.y *= -1;
   }
 
   reappear(width, height) {
@@ -169,7 +187,7 @@ class Particle {
     context.strokeStyle = this.color;
     context.lineWidth = 4
     context.beginPath();
-    context.arc(0, 0, this.radius, 0, Math.PI * 2);
+    context.arc(0, 0, params.radius, 0, Math.PI * 2);
     // context.fill();
     context.stroke();
     context.restore();
