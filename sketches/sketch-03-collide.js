@@ -103,8 +103,8 @@ const sketch = ({ context, width, height }) => {
       }
 
       // Bounce on walls
-      if (particle.pos.x - particle.radius <= 0 || particle.pos.x + particle.radius >= height) particle.vel.x *= -1;
-      if (particle.pos.y - particle.radius <= 0 || particle.pos.y + particle.radius >= height) particle.vel.y *= -1;
+      if (particle.pos.x - params.radius <= 0 || particle.pos.x + params.radius >= height) particle.vel.x *= -1;
+      if (particle.pos.y - params.radius <= 0 || particle.pos.y + params.radius >= height) particle.vel.y *= -1;
 
       // Refract on wall
       // if (particle.pos.x > width)  particle.pos.x = 0;
@@ -131,7 +131,7 @@ const createPane = () => {
   
   // pane.addInput(params, 'total',  { min: 1, max: 250, step: 1 });
   pane.addInput(params, 'radius', { min: 1, max: 50});
-  // pane.addInput(params, 'speed',  { min: 0, max: 20 });
+  // pane.addInput(params, 'speed',  { min: 0, max: 20, step: 1 });
 }
 
 createPane();
@@ -174,8 +174,6 @@ class Particle {
   }
 
   update() {
-    // this.vel.x *= 0.99
-    // this.vel.y *= 0.99
     this.pos.x += this.vel.x;
     this.pos.y += this.vel.y;
   }
