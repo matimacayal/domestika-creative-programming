@@ -1,0 +1,163 @@
+<html>
+    <body>
+        <!--
+        <h1>
+        Hello, Domestika
+        </h1>
+        -->
+        <canvas width="600" height="600"></canvas>
+        <script>
+            // Drawing
+            let canvas = document.querySelector('canvas');
+            let context = canvas.getContext('2d');
+
+            // context.fillStyle = 'blue';
+            // context.fillRect(100, 100, 400, 400);
+
+            // context.beginPath();
+            // context.rect(0, 0, 600, 600);
+            // context.stroke();
+
+            // context.beginPath();
+            // context.arc(300, 300, 100, 0, Math.PI * 2);
+            // context.stroke();
+
+            let lineWidth = 4;
+            let increment = 0
+
+            const littleColor = 'lightblue'
+            const bigColor = 'lightblue'
+            const backgroundColor = 'black'
+
+            let fillBlack = () => {
+                context.lineWidth = 5;
+                context.fillStyle = backgroundColor;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+
+            }
+
+            // Loops
+            // function drawSquares() {
+            let drawSquares = () => {
+                context.lineWidth = lineWidth
+
+                const width = 30;
+                const height = 30;
+                const gap = 20;
+                let x, y;
+                for (let i = 0; i < 8; i++)  {
+                    for (let j = 0; j < 8; j++)  {
+                        x = 100 + (width + gap) * i
+                        y = 100 + (height + gap) * j
+
+                        // Conditionals
+                        if (
+                            (i == 0 && j == 0) ||
+                            (i == 0 && j == 7) ||
+                            (i == 7 && j == 0) //||
+                            //(i == 7 && j == 7)
+                        ) {
+                            context.beginPath();
+                            //context.rect(x, y, width, height);
+                            context.arc(x + width / 2, y + width / 2, width/2 - 13, 0, Math.PI * 2);
+                            //context.arc(x + width / 2, y + width / 2, width/2 + 4, 0, Math.PI * 2);
+                            context.strokeStyle = backgroundColor;
+                            context.stroke();
+
+                            let offset = 6;
+                            context.beginPath();
+                            context.rect(x-offset, y-offset, width+offset*2, height+offset*2);
+                            context.strokeStyle = bigColor;
+                            context.stroke();
+                        } else if (Math.random() > 0.5) {  // (i > 0 && i < 4)
+                            context.beginPath();
+                            //context.rect(x + 8, y + 8, width - 16, height - 16);
+                            context.arc(x + width / 2, y + width / 2, width/2 + 4, 0, Math.PI * 2);
+                            //context.arc(x + width / 2, y + width / 2, width/2 - 13, 0, Math.PI * 2);
+                            context.strokeStyle = bigColor;
+                            context.stroke();
+
+                            context.beginPath();
+                            //context.rect(x, y, width, height);
+                            context.arc(x + width / 2, y + width / 2, width/2 - 13, 0, Math.PI * 2);
+                            //context.arc(x + width / 2, y + width / 2, width/2 + 4, 0, Math.PI * 2);
+                            context.strokeStyle = littleColor;
+                            context.stroke();
+                        } else {
+                            context.beginPath();
+                            //context.rect(x, y, width, height);
+                            context.arc(x + width / 2, y + width / 2, width/2 - 13, 0, Math.PI * 2);
+                            //context.arc(x + width / 2, y + width / 2, width/2 + 4, 0, Math.PI * 2);
+                            context.strokeStyle = littleColor;
+                            context.stroke();
+                        }
+
+                    }
+                }
+            }
+
+            setInterval(function() {
+                // Code to be executed at the interval
+                console.log("Interval execution!");
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                fillBlack();
+                drawSquares();
+                lineWidth = lineWidth + increment;
+                if (lineWidth > 10 || lineWidth < 1) {
+                    increment = increment * -1
+                }
+              }, 500); // 2000 milliseconds = 2 seconds
+
+
+
+            // Intro to programming
+            let year = 2042;
+            let nextYear = year + 1;
+
+            let dinner = 'salad';
+            let sentence = 'Tonight, dinner will be ' + dinner
+
+            function saySomething(param) {
+                console.log(param);
+            }
+
+            saySomething(sentence);
+
+            function add(a, b) {
+                return a + b;
+            }
+
+            let result = add(5, 7);
+            console.log(result);
+
+            let multiply = (a, b) => {
+                return a * b;
+            }
+
+            console.log(multiply(5, 7));
+
+            // Matrices and loops
+            let years = [];
+            let menu = ['starter', 'main', 'dessert', 'drinks', 'sides'];
+
+            for (let i = 0; i < menu.length; i++) {
+                console.log(menu[i]);
+            }
+
+            for (let i = 0; i < 10; i++) {
+                years.push(2040 + i);
+            }
+            console.log(years);
+
+            // Other variables
+            const gravity = 9.81
+            let velocity = 0.0
+
+            // Other loops
+            menu.forEach(item => {
+                console.log(item);
+            })
+
+        </script>
+    </body>
+</html>

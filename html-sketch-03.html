@@ -1,0 +1,112 @@
+<html>
+    <body>
+        <canvas width="700" height="700"></canvas>
+        <script>
+            // CLASES
+            const randomRange = (min, max) => {
+                return Math.random() * (max - min) * min
+            }
+
+            class Vector {
+                constructor(x, y, radius) {
+                    this.x = x;
+                    this.y = y;
+                }
+
+                getDistance(v) {
+                    const dx = this.x - v.x;
+                    const dy = this.y - v.y;
+                    return Math.sqrt(dx * dx + dy * dy);
+                }
+            }
+            
+            class Agent {
+                constructor(x, y) {
+                    this.pos = new Vector(x, y);
+                    this.vel = new Vector(randomRange(-1,1), randomRange(-1,1));
+                    this.radius = 0;  // randomRange(4, 12);
+                
+                }
+            
+                bounce(width, height) {
+                    if (this.pos.x > width  || this.pos.x < 0) this.vel.x *= -1;
+                    if (this.pos.y > height || this.pos.y < 0) this.vel.y *= -1;
+                }
+            
+                update() {
+                    // this.vel.x *= 0.99
+                    // this.vel.y *= 0.99
+                    this.pos.x += this.vel.x;
+                    this.pos.y += this.vel.y;
+                }
+            
+                draw(context) {
+                    context.save()
+                    context.translate(this.pos.x, this.pos.y)
+                    context.fillStyle = 'white';
+                    //context.strokeStyle = 'white'
+                    //context.lineWidth = 4
+                    context.beginPath();
+                    context.arc(0, 0, this.radius, 0, Math.PI * 2);
+                    context.fill();
+                    //context.stroke();
+                    context.restore();
+                }
+            }
+
+            // SCRIPT
+            let canvas = document.querySelector('canvas');
+            let context = canvas.getContext('2d');
+            
+            const width = canvas.width;
+            const height = canvas.height;
+
+            const agents = [];
+
+            for (let i = 0; i < 200; i++) { 
+                const x = randomRange(0, width);
+                const y = randomRange(0, height);
+                agents.push(new Agent(x, y))
+            }
+
+            const loop = () => {
+                context.fillStyle = 'black';
+                context.fillRect(0, 0, width, height);
+
+                for (let i = 0; i < agents.length; i++) {
+                const agent = agents[i];
+                    for (let j = i+1; j < agents.length; j++) {
+                        const other = agents[j];
+
+                        const dist = agent.pos.getDistance(other.pos);
+                        // console.log(dist);
+                        if (dist > 90) continue;
+
+                        context.beginPath()
+                        context.moveTo(agent.pos.x, agent.pos.y);
+                        context.lineTo(other.pos.x, other.pos.y);
+                        context.strokeStyle = 'white'
+                        // context.lineWidt = 1;
+                        context.stroke();
+                    }
+                }
+
+                // const point = {x: 800, y: 400, radius: 10};
+                // context.fillStyle = 'black';
+                agents.forEach(agent => {
+                    agent.update();
+                    agent.bounce(width, height)
+                    agent.draw(context)
+                })
+            }         
+
+            // ANIMATE
+            const animate = () => {
+                // console.log('frame');
+                loop();
+                requestAnimationFrame(animate);
+            }
+            animate();
+        </script>
+    </body>
+</html>
