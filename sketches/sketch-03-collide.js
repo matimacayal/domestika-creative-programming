@@ -12,6 +12,8 @@ const params = {
   total: 250,
   radius: 20,
   speed: 3,
+  frame: 0,
+  collisions: 0,
 };
 
 // In the backgroud canvas-sketch uses this to make the animation
@@ -76,6 +78,7 @@ const sketch = ({ context, width, height }) => {
         const dist = particle.pos.getDistance(other.pos.x, other.pos.y);
 
         if (dist > 2 * params.radius) continue;
+        params.collisions += 1;
         // console.log("collided");
 
         const v1x = particle.vel.x;
@@ -121,6 +124,8 @@ const sketch = ({ context, width, height }) => {
       // particle.reappear(width, height);
       particle.draw(context);
     })
+
+    params.frame += 1;
   };
 };
 
@@ -132,6 +137,8 @@ const createPane = () => {
   // pane.addInput(params, 'total',  { min: 1, max: 250, step: 1 });
   pane.addInput(params, 'radius', { min: 1, max: 50});
   // pane.addInput(params, 'speed',  { min: 0, max: 20, step: 1 });
+  pane.addMonitor(params, 'collisions', {interval: 100,});
+  pane.addMonitor(params, 'frame', {interval: 100,});
 }
 
 createPane();
