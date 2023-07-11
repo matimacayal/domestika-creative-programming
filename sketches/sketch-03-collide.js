@@ -16,6 +16,18 @@ const params = {
   collisions: 0,
 };
 
+const createPane = () => {
+  const pane = new Tweakpane.Pane();
+  // let folder;
+  // folder = pane.addFolder({title: 'Configuration'});
+  
+  pane.addInput(params, 'radius', { min: 1, max: 33});
+  pane.addMonitor(params, 'collisions', {interval: 100,});
+  pane.addMonitor(params, 'frame', {interval: 100,});
+  // pane.addInput(params, 'total',  { min: 1, max: 250, step: 1 });
+  // pane.addInput(params, 'speed',  { min: 0, max: 20, step: 1 });
+}
+
 // In the backgroud canvas-sketch uses this to make the animation
 // the function that is called is the 'return ({ context, width, height }) => {' ...
 // const animate = () => {
@@ -128,18 +140,6 @@ const sketch = ({ context, width, height }) => {
     params.frame += 1;
   };
 };
-
-const createPane = () => {
-  const pane = new Tweakpane.Pane();
-  // let folder;
-  // folder = pane.addFolder({title: 'Configuration'});
-  
-  // pane.addInput(params, 'total',  { min: 1, max: 250, step: 1 });
-  pane.addInput(params, 'radius', { min: 1, max: 50});
-  // pane.addInput(params, 'speed',  { min: 0, max: 20, step: 1 });
-  pane.addMonitor(params, 'collisions', {interval: 100,});
-  pane.addMonitor(params, 'frame', {interval: 100,});
-}
 
 createPane();
 canvasSketch(sketch, settings);
